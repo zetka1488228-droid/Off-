@@ -6,48 +6,25 @@
     <title>Vape Off | Магазин</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        :root {
-            --bg-color: #0f0f13;
-            --card-bg: #1a1a24;
-            --text-main: #ffffff;
-            --text-muted: #8e8e9f;
-            --accent: #8b5cf6;
-            --danger: #ef4444;
-        }
-
+        :root { --bg-color: #0f0f13; --card-bg: #1a1a24; --text-main: #ffffff; --text-muted: #8e8e9f; --accent: #8b5cf6; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 70px; overflow-x: hidden; }
-
-        /* --- МОДАЛКА 18+ --- */
-        #age-gate {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 15, 19, 0.95); backdrop-filter: blur(10px);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 9999; padding: 20px; text-align: center;
-        }
+        #age-gate { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 15, 19, 0.95); backdrop-filter: blur(10px); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; padding: 20px; text-align: center; }
         #age-gate h2 { margin-bottom: 10px; font-size: 24px; }
         #age-gate p { color: var(--text-muted); margin-bottom: 30px; font-size: 16px; }
         .age-buttons { display: flex; gap: 15px; width: 100%; max-width: 300px; }
         .btn-age { flex: 1; padding: 15px; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; }
         .btn-yes { background: var(--accent); color: white; }
         .btn-no { background: var(--card-bg); color: white; border: 1px solid #333; }
-
-        /* --- ШАПКА --- */
         .header { padding: 20px; display: flex; justify-content: space-between; align-items: center; }
         .logo { font-size: 22px; font-weight: 800; }
         .logo span { color: var(--accent); }
-
-        /* --- ПОИСК И КАТЕГОРИИ --- */
         .search-container { padding: 0 20px 15px 20px; }
         .search-input { width: 100%; background: var(--card-bg); border: 1px solid #333; border-radius: 12px; padding: 12px 15px; color: white; font-size: 16px; outline: none; }
-        .search-input:focus { border-color: var(--accent); }
-        
         .categories { display: flex; gap: 10px; padding: 0 20px 20px 20px; overflow-x: auto; scrollbar-width: none; }
         .categories::-webkit-scrollbar { display: none; }
         .category-btn { background: var(--card-bg); color: var(--text-main); border: 1px solid #333; padding: 10px 18px; border-radius: 20px; white-space: nowrap; font-size: 14px; font-weight: 500; cursor: pointer; }
         .category-btn.active { background: var(--accent); border-color: var(--accent); }
-
-        /* --- СЕТКА ТОВАРОВ --- */
         .products-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 0 20px; }
         .product-card { background: var(--card-bg); border-radius: 15px; overflow: hidden; display: flex; flex-direction: column; position: relative; cursor: pointer; transition: transform 0.2s; }
         .product-card:active { transform: scale(0.97); }
@@ -56,8 +33,6 @@
         .product-info { padding: 12px; display: flex; flex-direction: column; flex-grow: 1; }
         .product-title { font-size: 14px; font-weight: 600; margin-bottom: 8px; line-height: 1.3; }
         .product-price { margin-top: auto; font-size: 16px; font-weight: 800; color: white; background: var(--accent); display: inline-block; padding: 6px 12px; border-radius: 10px; align-self: flex-start; }
-
-        /* --- СТРАНИЦА ТОВАРА --- */
         .product-page { padding: 20px; }
         .back-btn { background: none; border: 1px solid var(--accent); color: var(--accent); padding: 8px 15px; border-radius: 10px; margin-bottom: 15px; cursor: pointer; font-size: 14px; display: inline-flex; align-items: center; gap: 5px; }
         .product-page-img { width: 100%; height: 250px; object-fit: cover; border-radius: 15px; margin-bottom: 20px; background: #222; }
@@ -67,35 +42,26 @@
         .flavor-btn { width: 100%; background: var(--card-bg); color: white; border: 1px solid #333; padding: 15px; border-radius: 12px; margin-bottom: 10px; text-align: center; font-size: 16px; cursor: pointer; }
         .flavor-btn:active { background: var(--accent); }
         .buy-btn { width: 100%; background: var(--accent); color: white; border: none; padding: 18px; border-radius: 15px; font-size: 18px; font-weight: bold; margin-top: 20px; cursor: pointer; }
-
-        /* --- ПРОФИЛЬ --- */
         .profile-page { padding: 20px; }
         .profile-card { background: var(--card-bg); border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 20px; }
         .profile-avatar { width: 80px; height: 80px; background: var(--accent); border-radius: 50%; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; font-size: 30px; }
         .profile-menu-item { background: var(--card-bg); border-radius: 15px; padding: 15px 20px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border: 1px solid transparent; }
-        .profile-menu-item:active { border-color: var(--accent); }
         .profile-menu-icon { width: 40px; height: 40px; background: rgba(139, 92, 246, 0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-right: 15px; }
         .profile-menu-text { flex-grow: 1; text-align: left; }
         .profile-menu-text h4 { font-size: 16px; margin-bottom: 3px; }
         .profile-menu-text p { font-size: 12px; color: var(--text-muted); }
         .profile-menu-arrow { color: var(--accent); font-size: 20px; }
-
-        /* --- КОРЗИНА --- */
         .cart-page { padding: 20px; text-align: center; color: var(--text-muted); margin-top: 50px; }
-
-        /* --- НИЖНЕЕ МЕНЮ --- */
         .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card-bg); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #333; z-index: 100; }
         .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 12px; cursor: pointer; }
         .nav-item.active { color: var(--accent); }
         .nav-icon { font-size: 20px; margin-bottom: 4px; }
-
         .page { display: none; }
         .page.active { display: block; }
     </style>
 </head>
 <body>
 
-    <!-- МОДАЛКА 18+ -->
     <div id="age-gate">
         <h2>Вам есть 18 лет?</h2>
         <p>Данный магазин предназначен только для совершеннолетних пользователей.</p>
@@ -105,13 +71,11 @@
         </div>
     </div>
 
-    <!-- ШАПКА -->
     <div class="header" id="main-header">
         <div class="logo">VAPE <span>OFF</span></div>
         <div id="user-name" style="font-size: 14px; color: var(--text-muted);"></div>
     </div>
 
-    <!-- КАТАЛОГ -->
     <div id="page-catalog" class="page active">
         <div class="search-container">
             <input type="text" id="search-input" class="search-input" placeholder="Поиск товаров..." oninput="filterProducts()">
@@ -122,37 +86,28 @@
             <button class="category-btn" onclick="filterCategory('Испарители', this)">Испарители</button>
             <button class="category-btn" onclick="filterCategory('Расходники', this)">Расходники</button>
         </div>
-        <div class="products-grid" id="products-container">
-            <!-- Товары будут рендериться через JS -->
-        </div>
+        <div class="products-grid" id="products-container"></div>
     </div>
 
-    <!-- СТРАНИЦА ТОВАРА -->
     <div id="page-product" class="page">
         <div class="product-page">
             <button class="back-btn" onclick="switchTab('catalog')">← Назад</button>
             <img id="detail-img" src="" class="product-page-img">
             <h1 id="detail-title" class="product-page-title"></h1>
             <div id="detail-price" class="product-page-price"></div>
-            
             <div id="flavors-section">
                 <div class="flavor-title">Выберите вкус:</div>
                 <div id="flavors-list"></div>
             </div>
-
             <button class="buy-btn" onclick="addToCart()">🛒 Добавить в корзину</button>
         </div>
     </div>
 
-    <!-- КОРЗИНА -->
     <div id="page-cart" class="page">
         <div class="header"><div class="logo">Корзина</div></div>
-        <div class="cart-page">
-            Тут пока пусто...<br>Добавьте товары из каталога.
-        </div>
+        <div class="cart-page">Тут пока пусто...<br>Добавьте товары из каталога.</div>
     </div>
 
-    <!-- ПРОФИЛЬ -->
     <div id="page-profile" class="page">
         <div class="header"><div class="logo">Профиль</div></div>
         <div class="profile-page">
@@ -161,54 +116,31 @@
                 <h2 id="profile-name">Загрузка...</h2>
                 <p id="profile-id" style="color: var(--text-muted); font-size: 14px; margin-top: 5px;">@username</p>
             </div>
-
-            <!-- Промокоды -->
             <div class="profile-menu-item" onclick="alert('Скоро тут появятся промокоды!')">
                 <div class="profile-menu-icon">🎁</div>
-                <div class="profile-menu-text">
-                    <h4>Промокоды</h4>
-                    <p>Ввести промокод на скидку</p>
-                </div>
+                <div class="profile-menu-text"><h4>Промокоды</h4><p>Ввести промокод на скидку</p></div>
                 <div class="profile-menu-arrow">›</div>
             </div>
-
-            <!-- Менеджер -->
             <div class="profile-menu-item" onclick="window.open('https://t.me/v4peoff', '_blank')">
                 <div class="profile-menu-icon">💬</div>
-                <div class="profile-menu-text">
-                    <h4>Менеджер</h4>
-                    <p>Поможем с заказом и вопросами</p>
-                </div>
+                <div class="profile-menu-text"><h4>Менеджер</h4><p>Поможем с заказом и вопросами</p></div>
                 <div class="profile-menu-arrow">›</div>
             </div>
-
-            <!-- Канал -->
             <div class="profile-menu-item" onclick="window.open('https://t.me/v4peofff', '_blank')">
                 <div class="profile-menu-icon">📢</div>
-                <div class="profile-menu-text">
-                    <h4>Канал</h4>
-                    <p>Новости, акции и обновления</p>
-                </div>
+                <div class="profile-menu-text"><h4>Канал</h4><p>Новости, акции и обновления</p></div>
                 <div class="profile-menu-arrow">›</div>
             </div>
         </div>
     </div>
 
-    <!-- НИЖНЕЕ МЕНЮ -->
     <div class="bottom-nav">
-        <div class="nav-item active" id="nav-catalog" onclick="switchTab('catalog')">
-            <div class="nav-icon">🛍️</div><div>Ассортимент</div>
-        </div>
-        <div class="nav-item" id="nav-cart" onclick="switchTab('cart')">
-            <div class="nav-icon">🛒</div><div>Корзина</div>
-        </div>
-        <div class="nav-item" id="nav-profile" onclick="switchTab('profile')">
-            <div class="nav-icon">👤</div><div>Профиль</div>
-        </div>
+        <div class="nav-item active" id="nav-catalog" onclick="switchTab('catalog')"><div class="nav-icon">🛍️</div><div>Ассортимент</div></div>
+        <div class="nav-item" id="nav-cart" onclick="switchTab('cart')"><div class="nav-icon">🛒</div><div>Корзина</div></div>
+        <div class="nav-item" id="nav-profile" onclick="switchTab('profile')"><div class="nav-icon">👤</div><div>Профиль</div></div>
     </div>
 
     <script>
-        // --- 1. ИНИЦИАЛИЗАЦИЯ TELEGRAM ---
         const tg = window.Telegram.WebApp;
         tg.expand();
         tg.setHeaderColor('#0f0f13');
@@ -224,41 +156,38 @@
             document.getElementById('profile-id').innerText = '@guest';
         }
 
-        // --- 2. ЛОГИКА 18+ ---
-        function confirmAge() {
-            document.getElementById('age-gate').style.display = 'none';
-            // Можно сохранить в localStorage, чтобы не спрашивало каждый раз
-            localStorage.setItem('ageConfirmed', 'true');
-        }
+        function confirmAge() { document.getElementById('age-gate').style.display = 'none'; localStorage.setItem('ageConfirmed', 'true'); }
+        function closeApp() { tg.close(); }
+        window.onload = () => { if (localStorage.getItem('ageConfirmed') === 'true') { document.getElementById('age-gate').style.display = 'none'; } };
 
-        function closeApp() {
-            tg.close(); // Закрывает Mini App
-        }
+        // --- ПОДКЛЮЧЕНИЕ К SUPABASE (ТВОИ КЛЮЧИ УЖЕ ВСТАВЛЕНЫ) ---
+        const SUPABASE_URL = "https://fcnbfeytabuhgiovcdbv.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_BhqhzxYKwTZmuuSqQUpHGQ_cWhTNNSW";
 
-        // Проверка при загрузке (если уже подтверждал ранее)
-        window.onload = () => {
-            if (localStorage.getItem('ageConfirmed') === 'true') {
-                document.getElementById('age-gate').style.display = 'none';
-            }
-        };
-
-        // --- 3. ДАННЫЕ ТОВАРОВ (Пока тут, потом заменим на API) ---
-        const products = [
-            { id: 1, title: "Rick and Morty BAD TRIP", price: 17, category: "Жидкости", img: "https://via.placeholder.com/300x300/1a1a24/8b5cf6?text=Rick+and+Morty", flavors: ["Клубника банан", "Арбуз Малина", "Земляника Драгонфрут"] },
-            { id: 2, title: "Монашка x HOTSPOT", price: 17, category: "Жидкости", img: "https://via.placeholder.com/300x300/1a1a24/8b5cf6?text=Monashka", flavors: ["Вишня", "Виноград", "Манго"] },
-            { id: 3, title: "Никобустер 20%", price: 5, category: "Расходники", img: "https://via.placeholder.com/300x300/1a1a24/8b5cf6?text=Nikobuster", flavors: [] },
-            { id: 4, title: "Rick and Morty x CATCWILL", price: 20, category: "Жидкости", img: "https://via.placeholder.com/300x300/1a1a24/8b5cf6?text=CATCWILL", flavors: ["Кислые ленточки", "Клубника ежевика"] }
-        ];
-
+        let allProducts = [];
         let currentCategory = 'Все';
         let currentSearch = '';
 
-        // --- 4. РЕНДЕР ТОВАРОВ ---
+        async function fetchProducts() {
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/products?select=*`, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+                allProducts = await response.json();
+                renderProducts();
+            } catch (error) {
+                console.error("Ошибка загрузки:", error);
+                document.getElementById('products-container').innerHTML = '<div style="grid-column: span 2; text-align: center; color: var(--text-muted); margin-top: 20px;">Ошибка загрузки товаров</div>';
+            }
+        }
+
         function renderProducts() {
             const container = document.getElementById('products-container');
-            container.innerHTML = ''; // Очищаем
-
-            const filtered = products.filter(p => {
+            container.innerHTML = '';
+            const filtered = allProducts.filter(p => {
                 const matchCategory = currentCategory === 'Все' || p.category === currentCategory;
                 const matchSearch = p.title.toLowerCase().includes(currentSearch.toLowerCase());
                 return matchCategory && matchSearch;
@@ -275,7 +204,7 @@
                 card.onclick = () => openProductPage(p.id);
                 card.innerHTML = `
                     <div class="product-badge">${p.category}</div>
-                    <img src="${p.img}" class="product-img" alt="${p.title}">
+                    <img src="${p.image_url}" class="product-img" alt="${p.title}">
                     <div class="product-info">
                         <div class="product-title">${p.title}</div>
                         <div class="product-price">${p.price} Br</div>
@@ -285,27 +214,20 @@
             });
         }
 
-        // --- 5. ФИЛЬТРЫ И ПОИСК ---
-        function filterProducts() {
-            currentSearch = document.getElementById('search-input').value;
-            renderProducts();
-        }
-
+        function filterProducts() { currentSearch = document.getElementById('search-input').value; renderProducts(); }
         function filterCategory(cat, btn) {
             currentCategory = cat;
-            // Смена активной кнопки
             document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             renderProducts();
         }
 
-        // --- 6. СТРАНИЦА ТОВАРА ---
         let selectedFlavor = null;
         function openProductPage(id) {
-            const product = products.find(p => p.id === id);
+            const product = allProducts.find(p => p.id === id);
             if (!product) return;
 
-            document.getElementById('detail-img').src = product.img;
+            document.getElementById('detail-img').src = product.image_url;
             document.getElementById('detail-title').innerText = product.title;
             document.getElementById('detail-price').innerText = product.price + ' Br';
 
@@ -314,23 +236,23 @@
             flavorsList.innerHTML = '';
             selectedFlavor = null;
 
-            if (product.flavors && product.flavors.length > 0) {
+            if (product.flavors && product.flavors.trim() !== "") {
                 flavorsSection.style.display = 'block';
-                product.flavors.forEach(flavor => {
+                const flavorsArray = product.flavors.split(',');
+                flavorsArray.forEach(flavor => {
                     const btn = document.createElement('button');
                     btn.className = 'flavor-btn';
-                    btn.innerText = flavor;
+                    btn.innerText = flavor.trim();
                     btn.onclick = () => {
                         document.querySelectorAll('.flavor-btn').forEach(b => b.style.background = 'var(--card-bg)');
                         btn.style.background = 'var(--accent)';
-                        selectedFlavor = flavor;
+                        selectedFlavor = flavor.trim();
                     };
                     flavorsList.appendChild(btn);
                 });
             } else {
                 flavorsSection.style.display = 'none';
             }
-
             switchTab('product');
         }
 
@@ -342,23 +264,18 @@
             alert('Товар добавлен в корзину! (Функция в разработке)');
         }
 
-        // --- 7. НАВИГАЦИЯ ---
         function switchTab(tabId) {
             document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
             document.getElementById('page-' + tabId).classList.add('active');
-
-            // Подсветка меню
             document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
             if(tabId === 'catalog') document.getElementById('nav-catalog').classList.add('active');
             if(tabId === 'cart') document.getElementById('nav-cart').classList.add('active');
             if(tabId === 'profile') document.getElementById('nav-profile').classList.add('active');
-
-            // Скрываем шапку на странице товара
             document.getElementById('main-header').style.display = (tabId === 'product') ? 'none' : 'flex';
         }
 
-        // Первый запуск
-        renderProducts();
+        // Запуск загрузки при открытии
+        fetchProducts();
     </script>
 </body>
-    </html>
+</html>
